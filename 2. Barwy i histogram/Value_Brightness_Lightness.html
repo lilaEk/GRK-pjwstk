@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Value/Brightness/Lightness</title>
+</head>
+<body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+<script type="text/javascript">
+
+    let size = 256
+    let images = {}
+    let src
+
+    function preload() {
+        src = loadImage("https://raw.githubusercontent.com/scikit-image/scikit-image/master/skimage/data/astronaut.png")
+
+        images.h = createImage(size, size)
+        images.s = createImage(size, size)
+        images.v = createImage(size, size)
+    }
+
+    function setup() {
+        createCanvas(512, 512)
+        src.resize(size, size)
+        src.loadPixels()
+
+        for (let i = 0; i < size; i += 4) {
+
+            let r = src.pixels[i] / 255
+            let g = src.pixels[i + 1] / 255
+            let b = src.pixels[i + 2] / 255
+
+            let cmax = Math.max(r, g, b)
+            let cmin = Math.min(r, g, b)
+
+            let v = cmax;
+            let l = (cmax + cmin) / 2
+
+            let x = (i / 4) % size // kolumna
+            let y =(i / 4) / size // wiersz
+
+            images.v.set(x, y, 255 * v)
+            images.h.set(x, y, 255)
+            images.s.set(x, y, 255)
+        }
+
+        images.h.updatePixels()
+        images.s.updatePixels()
+        images.v.updatePixels()
+
+        image(images.h, 0, 0)
+        image(images.s, size, 0)
+        image(images.v, 0, size)
+        image(src, size, size)
+    }
+
+</script>
+</body>
+</html>

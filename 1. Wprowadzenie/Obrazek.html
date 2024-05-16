@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Obrazek</title>
+</head>
+<body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+<script type="text/javascript">
+
+function setup() {
+    createCanvas(800, 600);
+    noLoop();
+}
+
+function draw() {
+    //noprotect
+
+    //niebieskie tło
+    background(198, 200, 247);
+
+    //trawa
+    for (let y = height / 3 * 2; y < height; y++)
+        for (let x = 0; x < width; x++) {
+            set(x, y, color(17, 97, 24));
+        }
+
+    //kwiatki
+    for (let i = 0; i < 1000; i++) {
+
+        let x = floor(random(0, width));
+        let y = floor(random(height / 3 * 2, height));
+        let random_color = color(floor(random(0, 256)), floor(random(0, 256)), floor(random(0, 256)));
+
+        set(x, y, random_color);
+    }
+
+    //fasada domu
+    for (let y = height / 3; y < height / 3 * 2; y++)
+        for (let x = width / 4; x < width / 4 * 3; x++) {
+            set(x, y, color(129, 65, 65));
+        }
+
+    //dach domu
+    for (let y = 50, w = 0; y < height / 3; y++, w += 2) {
+
+        let startX = width / 2 - w;
+        let endX = width / 2 + w;
+
+        for (let x = startX; x <= endX; x++) {
+            set(x, y, color(232, 113, 111));
+        }
+    }
+
+    updatePixels();
+}
+
+</script>
+</body>
+</html>

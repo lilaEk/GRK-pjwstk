@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saturation</title>
+</head>
+<body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+<script type="text/javascript">
+
+    let size = 256
+    let images = {}
+    let src
+
+    function preload() {
+        src = loadImage("https://raw.githubusercontent.com/scikit-image/scikit-image/master/skimage/data/astronaut.png")
+
+        images.h = createImage(size, size)
+        images.s = createImage(size, size)
+        images.v = createImage(size, size)
+    }
+
+    function setup() {
+        createCanvas(512,512)
+        src.resize(256,256)
+        src.loadPixels()
+
+        images.h.loadPixels()
+        images.s.loadPixels()
+        images.v.loadPixels()
+
+        for(let x=0;x<size;x++){
+            for(let y=0;y<size;y++) {
+
+                let i=4*(y*size+x)
+
+                let r = src.pixels[i]/255
+                let g = src.pixels[i+1]/255
+                let b = src.pixels[i+2]/255
+                let a = src.pixels[i + 3]
+
+                let cmax = Math.max(r,g,b)
+                let cmin = Math.min(r,g,b)
+
+                let c = cmax - cmin
+                let l = (cmax + cmin) / 2
+
+                images.h.pixels[i]
+                images.h.pixels[i + 1]
+                images.h.pixels[i + 2]
+                images.h.pixels[i + 3]
+
+                s = c / (1 - Math.abs(2 * l - 1))
+                sx = (i / 4) % 256
+                sy = (i / 4) / 256
+                images.s.set(sx, sy, 255 * s)
+
+                v = cmax;
+                vx= (i / 4)%256
+                vy= (i / 4)/256
+                images.v.set(vx,vy,255*v)
+            }
+        }
+
+        images.h.updatePixels()
+        images.s.updatePixels()
+        images.v.updatePixels()
+
+        image(images.h, 0, 0)
+        image(images.s, size, 0)
+        image(images.v, 0, size)
+        image(src, size, size)
+    }
+
+</script>
+</body>
+</html>

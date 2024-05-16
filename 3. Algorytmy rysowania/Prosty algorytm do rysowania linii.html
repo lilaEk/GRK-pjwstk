@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prosty algorytm do rysowania linii</title>
+</head>
+<body>
+<style> body { background-color:#ccc; } </style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+<script type="text/javascript">
+  
+  //INICJALIZACJA CANVAS
+  function setup() {
+    createCanvas(512,512);
+    background(255);
+  }
+  
+  var x0=-1;
+  var y0=-1;
+  var x1=-1;
+  var y1=-1;
+
+  //OBSŁUGA ZDARZEŃ MYSZY
+  
+  //klik
+  function mousePressed() {
+    x0=mouseX;
+    y0=mouseY;
+  }
+  
+  //przeciągnięcie
+  function mouseDragged() {  
+    x1=mouseX;
+    y1=mouseY;  
+    background(255);
+    noStroke();
+    fill('red');
+    ellipse(x0-3,y0-3,6);
+    fill('green');  
+    ellipse(x1-3,y1-3,6);
+  }
+  
+  //puszczenie przycisku
+  function mouseReleased() {
+  background(255); //białe
+  loadPixels();
+  draw_line();
+  updatePixels();
+  }
+  
+  function set_pixel(x,y,c) { //przyjmuje takie argumenty
+    idx=(y*512+x)*4; //oblicza indeks piksela na canvas (RGBA)
+    pixels[idx]=c;
+    pixels[idx+1]=c;
+    pixels[idx+2]=c;
+    pixels[idx+3]=255; //przezroczystosc - brak
+  }
+  
+  function draw_line() {
+
+	//różnice między współrzendymi początku i końca
+    let dx = x1 - x0;
+    let dy = y1 - y0;
+    
+	//dzięki temu możemy wyliczyć współczynniki a i b do równania liniowego
+    let a = Math.floor(dy / dx);
+    let b = y0 - a * x0;
+    
+    let low=Math.min(x0,x1);
+    let high=Math.max(x0,x1);
+    
+    for (let i = low; i < high; i++) {
+	//i określa na którym x jestesmy
+	//oblicza y na podstawie równania prostej y=ax+b
+      set_pixel(i, Math.round(i*a+b), 0); 
+    }
+  }
+
+</script>
+</body>
+</html>

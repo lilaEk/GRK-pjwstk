@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Model RGB</title>
+</head>
+<body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+<script type="text/javascript">
+ 
+    let size = 256
+    let images = {}
+    let src
+
+    function preload() {
+        src = loadImage("https://raw.githubusercontent.com/scikit-image/scikit-image/master/skimage/data/astronaut.png")
+
+        images.r = createImage(size, size)
+        images.g = createImage(size, size)
+        images.b = createImage(size, size)
+        images.rgb = createImage(size, size)
+    }
+
+    function setup() {
+        createCanvas(512, 512)
+        src.resize(size, size)
+        src.loadPixels()
+
+        changeColor(images.r, true, false, false)
+        changeColor(images.s, false, true, false)
+        changeColor(images.v, false, false, true)
+
+        images.rgb.blend(images.r, 0, 0, size, size, 0, 0, size, size, ADD)
+        images.rgb.blend(images.s, 0, 0, size, size, 0, 0, size, size, ADD)
+        images.rgb.blend(images.v, 0, 0, size, size, 0, 0, size, size, ADD)
+
+        image(images.r, 0, 0)
+        image(images.s, size, 0)
+        image(images.v, 0, size)
+        image(images.rgb, size, size)
+    }
+
+    function changeColor(imgToChange, r, g, b) {
+        imgToChange.loadPixels()
+
+        let d = pixelDensity()
+        for (let x = 0; x < size; x++) {
+            for (let y = 0; y < size; y++) {
+                for (let dx = 0; dx < d; dx++) {
+                    for (let dy = 0; dy < d; dy++) {
+                        let pos = 4 * ((y * d + dy) * size * d + (x * d + dx))
+
+                        if (r) imgToChange.pixels[pos] = src.pixels[pos]
+                        if (g) imgToChange.pixels[pos + 1] = src.pixels[pos + 1]
+                        if (b) imgToChange.pixels[pos + 2] = src.pixels[pos + 2]
+
+                        imgToChange.pixels[pos + 3] = src.pixels[pos + 3]
+                    }
+                }
+            }
+        }
+
+        imgToChange.updatePixels()
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Fraktalen</title>
+</head>
+<body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.js"></script>
+<script type="text/javascript">
+
+let x1 = 400;
+let y1 = 100;
+
+let x2 = 200;
+let y2 = 500;
+
+let x3 = 600;
+let y3 = 500;
+
+function setup() {
+    createCanvas(800, 600);
+    noLoop();
+}
+
+function draw() {
+    //noprotect
+
+    background(0);
+    stroke(255);
+
+    point(x1, y1);
+    point(x2, y2);
+    point(x3, y3);
+
+    let cx = x1;
+    let cy = y1;
+
+    for (let i = 0; i < 30000; i++) {
+        tmp = floor(random(0, 3));
+
+        switch (tmp) {
+            case 0:
+                cx = (cx + x1) / 2
+                cy = (cy + y1) / 2;
+                break;
+            case 1:
+                cx = (cx + x2) / 2
+                cy = (cy + y2) / 2;
+                break;
+            default:
+                cx = (cx + x3) / 2
+                cy = (cy + y3) / 2;
+                break;
+        }
+
+        point(cx, cy);
+    }
+
+    updatePixels();
+}
+
+</script>
+</body>
+</html>
